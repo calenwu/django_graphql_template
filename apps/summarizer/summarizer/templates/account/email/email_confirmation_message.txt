@@ -1,0 +1,23 @@
+{% load account core %}
+{% load i18n %}
+
+{% block content %}{% autoescape off %}{% user_display user as user_display %}
+{% blocktrans with new_activate_url=activate_url|adjust_email_activation_url sitename=activate_url|site_name supportemail=activate_url|support_email %}
+Dear user,
+
+Thank you for registering with {{ sitename }}! We're excited to have you on board.
+To complete your registration and activate your account, please confirm your email address. You can do this by clicking the link below:
+{{ new_activate_url }}
+
+Once your email is confirmed, you'll have full access to all the features and services we offer at {{ sitename }}.
+
+Thank you for joining us at {{ sitename }}!
+
+Best regards,
+The {{ sitename }} Team
+
+
+
+If you did not request this email, please ignore it or contact us at {{ supportemail }} for assistance.
+{% endblocktrans %}
+{% endautoescape %}{% endblock content %}

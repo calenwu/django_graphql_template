@@ -1,0 +1,6 @@
+{% load i18n core %}
+{% autoescape off %}
+{% blocktrans with sitename=activate_url|site_name %}
+Confirm Your Email for {{sitename}}
+{% endblocktrans %}
+{% endautoescape %}

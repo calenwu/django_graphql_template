@@ -1,0 +1,86 @@
+version: '3.8'
+volumes:
+  pgdata:
+  static:
+services:
+#  nextjs: &nextjs
+#    #platform: linux/amd64
+#    build:
+#      context: .
+#      dockerfile: docker/dev/nextjs/Dockerfile
+#    env_file: .env_dev
+#    depends_on:
+#      - 'summarizer'
+#    volumes:
+#      - ./apps/nextjs:/apps/nextjs
+#    ports:
+#      - '3000:3000'
+
+  summarizer: &summarizer
+    #platform: linux/amd64
+    build:
+      context: .
+      dockerfile: docker/dev/summarizer/Dockerfile
+    env_file: .env_dev
+    depends_on:
+      - 'postgres'
+      - 'redis'
+    environment:
+      - 'DJANGO_SETTINGS_MODULE=config.settings.dev'
+      - 'PYTHONUNBUFFERED=1'
+      - 'DEBUG=True'
+    volumes:
+      - ./apps/summarizer:/apps/summarizer
+      - ./apps/summarizer/summarizer/media:/media/summarizer
+    ports:
+      - '8008:8008'
+      - '8001:8001'
+    command: python manage.py runserver 0.0.0.0:8008
+
+  celery_worker:
+    <<: *summarizer
+    restart: "on-failure:3"
+    ports: []
+    command: celery -A config worker --beat --scheduler django --loglevel=info -f logs/celery.log -c 9
+
+#  celery_worker:
+#    <<: *summarizer
+#    restart: "on-failure:3"
+#    ports: []
+#    command: celery -A config worker --loglevel=info -f logs/celery.log -c 9
+#
+#  celery_beat:
+#    <<: *summarizer
+#    restart: "on-failure:3"
+#    ports: []
+#    command: celery -A config beat -l info
+
+  postgres:
+    image: postgres:16.1-alpine3.19
+    env_file: .env_dev
+    environment:
+      - 'POSTGRES_HOST_AUTH_METHOD=scram-sha-256'
+      - 'POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256'
+    volumes:
+      - ./docker/dev/postgres/scripts:/docker-entrypoint-initdb.d
+      - ./pg_data/logs:/var/logs
+      - ./pg_data/data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+
+  redis:
+    image: redis:7.2.3-alpine
+    command: /bin/sh -c "redis-server --requirepass ${REDIS_PASSWORD}"
+    env_file: .env_dev
+    ports:
+      - '6379:6379'
+
+#  postgres_backup:
+#    env_file: .env_dev
+#    build:
+#      context: .
+#      dockerfile: docker/dev/pg_backup/Dockerfile
+#    depends_on:
+#      - 'postgres'
+#    volumes:
+#      - ./pg_data/backups:/pg_data

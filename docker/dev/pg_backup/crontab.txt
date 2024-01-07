@@ -1,0 +1,1 @@
+1 40 * * * /backup_postgres.sh
