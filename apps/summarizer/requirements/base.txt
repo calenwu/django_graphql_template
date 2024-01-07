@@ -10,6 +10,7 @@ django-cors-headers
 django-filter
 django-graphql-jwt
 django-redis
+django-simple-history
 graphene
 graphene-django
 graphql-ws

@@ -13,7 +13,6 @@ RUN chmod 777 /usr/bin/wkhtmltopdf
 
 ENV PYTHONPATH "${PYTHONPATH}:/summarizer/summarizer"
 
-
 COPY ./docker/dev/summarizer/entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 

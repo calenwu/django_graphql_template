@@ -144,7 +144,7 @@ export default function Page () {
 						}}/>
 				}
 				<div className='flex flex-row-reverse mt-8'>
-					<Button className='max-w-xs' disabled={email === initialEmail}>
+					<Button className='max-w-xs' disabled={email === initialEmail} loading={changeEmailLoading}>
 						Change Email
 					</Button>
 				</div>

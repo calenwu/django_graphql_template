@@ -63,6 +63,7 @@ INSTALLED_APPS = [
 
   'core',
   'user',
+  'simple_history',
 ]
 
 MIDDLEWARE = [
@@ -76,6 +77,7 @@ MIDDLEWARE = [
   'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
   'allauth.account.middleware.AccountMiddleware',
+  'simple_history.middleware.HistoryRequestMiddleware'
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -348,4 +350,10 @@ SITE_NAME = os.getenv('SITE_NAME')
 SUPPORT_EMAIL = os.getenv('SUPPORT_EMAIL')
 
 RECAPTCHA_SECRET_KEY = os.getenv('RECAPTCHA_SECRET_KEY')
+
+EMAIL_PRIMARY_COLOR = '#ffb514'
+EMAIL_PRIMARY_TEXT_COLOR = '#ffffff'
+EMAIL_SECONDARY_COLOR = '#ffb514'
+EMAIL_SECONDARY_TEXT_COLOR = '#ffffff'
+EMAIL_LOGO_URL = 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Google_Images_2015_logo.svg/1024px-Google_Images_2015_logo.svg.png'
 

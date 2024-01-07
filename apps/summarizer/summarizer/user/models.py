@@ -12,6 +12,7 @@ from graphql_jwt.settings import jwt_settings
 from graphql_jwt import signals as graphql_jwt_signals
 from allauth.account.models import EmailAddress
 from allauth.account.signals import email_confirmed
+from simple_history.models import HistoricalRecords
 
 
 class CustomUserManager(BaseUserManager):
@@ -53,6 +54,7 @@ class User(AbstractUser):
 	username = None
 	email = models.EmailField(_('Email address'), unique=True)
 	timezone = models.CharField(max_length=63, choices=TIMEZONES, default='UTC')
+	history = HistoricalRecords()
 
 	USERNAME_FIELD = 'email'
 	REQUIRED_FIELDS = []
