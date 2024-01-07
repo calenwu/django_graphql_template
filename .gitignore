@@ -37,10 +37,6 @@ docker/prod/
 node_modules/
 media
 
-# static
-public/fontawesome/
-public/imgs/
-
 # database
 pg_data/logs/
 pg_data/data/
